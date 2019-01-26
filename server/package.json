@@ -4,5 +4,8 @@
   "description": "Server side of jsviewer: Responsible for providing the file system tree and the compressed pictures.",
   "main": "index.js",
   "license": "MIT",
-  "author": "Pietro Carrara"
+  "author": "Pietro Carrara",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
 }
