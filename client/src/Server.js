@@ -3,8 +3,12 @@ const serverPort = 8000;
 
 const fullServerAddr = serverAddr + ':' + serverPort;
 
-const url = function (route) {
+function url (route) {
     return fullServerAddr + route;
 }
 
-export { serverAddr, serverPort, fullServerAddr, url };
+function img(path) {
+    return fullServerAddr + '/img/?path=' + path;
+}
+
+export { serverAddr, serverPort, fullServerAddr, url, img };

@@ -21,14 +21,14 @@ router.get('/tree', async (req, res) => {
     .catch(err => res.status(500).json(err));
 });
 
-router.get('/img', async (req, res) => {
+router.get('/img/', async (req, res) => {
 
     if (typeof req.query.path === 'undefined') {
         res.status(500).json({errno: -1, code: 'NO_IMG_PATH'});
         return;
     }
 
-    new Image(req.query.path)
+    new Image(TARGET_PATH + req.query.path)
     .resize(500, 500)
     .jpeg()
     .toBuffer()

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import * as configs from './Configs';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import * as server from './Server';
 import FolderView from './FolderView';
 import { setTree } from './Tree';
 
@@ -15,7 +15,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch(configs.url('/tree'))
+    fetch(server.url('/tree'))
       .then(res => res.json())
       .then(setTree)
       .catch(console.log)
@@ -27,9 +27,7 @@ class App extends Component {
       <Router>
         <div className="App">
           <header className="App-header">
-            <p>
-              My data is: {/*JSON.stringify(tree)*/}
-            </p>
+            <h1>JS Viewer</h1>
           </header>
 
           {this.body(this.state.loaded)}

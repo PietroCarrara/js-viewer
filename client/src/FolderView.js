@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { tree } from './Tree';
+import FileThumb from './FileThumb';
 
 class FolderView extends React.Component {
 
@@ -40,7 +41,7 @@ class FolderView extends React.Component {
             }
 
             this.folder = node.children;
-            this.path += node.name + '/';
+            this.path += encodeURIComponent(node.name) + '/';
         }
     }
 
@@ -50,11 +51,11 @@ class FolderView extends React.Component {
         for (var file of this.folder) {
             if (file.isDir) {
                 res.push(
-                <Link key={file.name} to={this.props.location.pathname + encodeURIComponent(file.name) + '/'}>
+                <Link key={file.name} to={'/folder' + this.path + encodeURIComponent(file.name) + '/'}>
                     FOLDER: {file.name}<br />
                 </Link>);
             } else {
-                res.push(<div key={file.name}>FILE: {file.name}<br /></div>);
+                res.push(<FileThumb src={this.path + encodeURIComponent(file.name)}/>);
             }
         }
 
@@ -64,7 +65,7 @@ class FolderView extends React.Component {
     render() {
         return (
             <div>
-                <h2>{this.path}</h2>
+                <h2>{decodeURIComponent(this.path)}</h2>
                 {this.files()}
             </div>
         );
