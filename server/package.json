@@ -6,6 +6,7 @@
   "license": "MIT",
   "author": "Pietro Carrara",
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "sharp": "^0.21.3"
   }
 }
