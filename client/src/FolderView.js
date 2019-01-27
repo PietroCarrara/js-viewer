@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { tree } from './Tree';
 
 class FolderView extends React.Component {
@@ -6,23 +7,40 @@ class FolderView extends React.Component {
     constructor() {
         super(...arguments);
 
+        if (typeof this.props.match.params.folder !== 'undefined') {
+            this.navigate(this.props.match.params.folder);
+        } else {
+            this.navigate('');
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.match.params !== this.props.match.params) {
+            this.navigate(nextProps.match.params.folder);
+        }
+    }
+
+    navigate(url) {
+
+        url = decodeURIComponent(url);
+
         // By default, display the root folder
         this.folder = tree;
         this.path = '/';
 
         // If there was an folder in the url, use that as root
-        if (typeof this.props.match.params.folder !== 'undefined') {
-            for (var name of this.props.match.params.folder.split('/')) {
-                var node = this.folder.find((x) => x.name === name);
+        for (var name of url.split('/')) {
+            if (name === '') continue;
 
-                if (node == null || typeof node.children === 'undefined') {
-                    console.log('Invalid path!');
-                    break;
-                }
+            var node = this.folder.find((x) => x.name === name);
 
-                this.folder = node.children;
-                this.path += node.name + '/';
+            if (node == null || typeof node.children === 'undefined') {
+                console.log('Invalid path while navigating to %s!', name);
+                break;
             }
+
+            this.folder = node.children;
+            this.path += node.name + '/';
         }
     }
 
@@ -31,9 +49,12 @@ class FolderView extends React.Component {
 
         for (var file of this.folder) {
             if (file.isDir) {
-                res.push(<div>FOLDER: {file.name}<br/></div>);
+                res.push(
+                <Link key={file.name} to={this.props.location.pathname + encodeURIComponent(file.name) + '/'}>
+                    FOLDER: {file.name}<br />
+                </Link>);
             } else {
-                res.push(<div>FILE: {file.name}<br/></div>);
+                res.push(<div key={file.name}>FILE: {file.name}<br /></div>);
             }
         }
 

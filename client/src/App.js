@@ -30,25 +30,20 @@ class App extends Component {
             <p>
               My data is: {/*JSON.stringify(tree)*/}
             </p>
-            <Link to={{
-              pathname: '/folder',
-              search: `?path=1.Animations`,
-            }}>Folder</Link>
           </header>
 
-          <this.Body loaded={this.state.loaded} />
+          {this.body(this.state.loaded)}
         </div>
       </Router>
     );
   }
 
-  Body(props) {
-    const loaded = props.loaded;
-
+  body(loaded) {
     if (loaded) {
       return (
         <div>
-          <Route exact path="/" component={FolderView} />
+          <Route path="/" exact component={FolderView} />
+          <Route path="/folder" exact component={FolderView} />
           <Route path="/folder/:folder(.*)" component={FolderView} />
         </div>
       );
