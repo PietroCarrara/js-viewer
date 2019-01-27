@@ -1,11 +1,10 @@
 const { FileSystem } = require('./filesystem');
 const { Image } = require('./image');
 const express = require('express');
+const config = require('./config');
 
 var fs = new FileSystem();
 var router = express();
-
-const TARGET_PATH = process.argv[2];
 
 // Middleware to allow cors
 router.use(function(req, res, next) {
@@ -16,7 +15,7 @@ router.use(function(req, res, next) {
 
 // Returns the file system tree
 router.get('/tree', async (req, res) => {
-    fs.tree(TARGET_PATH)
+    fs.tree(config.target)
     .then((json) => res.json(json))
     .catch(err => res.status(500).json(err));
 });
@@ -28,7 +27,7 @@ router.get('/img/', async (req, res) => {
         return;
     }
 
-    new Image(TARGET_PATH + req.query.path)
+    new Image(config.target + req.query.path)
     .resize(500, 500)
     .jpeg()
     .toBuffer()
