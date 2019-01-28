@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import * as server from './Server';
-import FolderView from './FolderView';
+import FolderView from './FolderView/FolderView';
 import { setTree } from './Tree';
 
 class App extends Component {
@@ -40,9 +40,11 @@ class App extends Component {
     if (loaded) {
       return (
         <div>
-          <Route path="/" exact component={FolderView} />
-          <Route path="/folder" exact component={FolderView} />
-          <Route path="/folder/:folder(.*)" component={FolderView} />
+          <Switch>
+            <Route path="/" exact component={FolderView} />
+            <Route path="/folder" exact component={FolderView} />
+            <Route path="/folder/:folder(.*)" component={FolderView} />
+          </Switch>
         </div>
       );
     } else {
