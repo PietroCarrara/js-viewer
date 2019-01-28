@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Icon, Row, Col, Breadcrumb, MenuItem } from 'react-materialize';
+import { Dropdown, Icon, Row, Col, Breadcrumb, MenuItem, Button, NavItem } from 'react-materialize';
 import { tree } from '../Tree';
 import FileThumb from './FileThumb';
 import Animated from 'animated/lib/targets/react-dom';
+import './FolderView.css';
 
 class FolderView extends React.Component {
 
@@ -41,11 +42,17 @@ class FolderView extends React.Component {
         // By default, display the root folder
         this.folder = tree;
         this.path = '/';
-        this.heading = [(
+        this.breadcumbs = [(
             <MenuItem>
                 <Link to={'/folder' + this.path}>/</Link>
             </MenuItem>
         )];
+        this.dropdown = [(
+            <Link to={'/folder' + this.path}>
+                <NavItem>/</NavItem>
+            </Link>
+        )];
+        var lastName = '/';
 
         // If there was an folder in the url, use that as root
         for (var name of url.split('/')) {
@@ -58,23 +65,42 @@ class FolderView extends React.Component {
                 break;
             }
 
+            lastName = node.name;
             this.folder = node.children;
             this.path += encodeURIComponent(node.name) + '/';
-            this.heading.push(
+            this.breadcumbs.push(
                 <MenuItem>
                     <Link to={'/folder' + this.path}>{node.name}</Link>
                 </MenuItem>
             );
+            this.dropdown.push(
+                <Link to={'/folder' + this.path}>
+                    <NavItem>{node.name}</NavItem>
+                </Link>
+            );
         }
+
+        this.dropdown.pop();
 
         this.heading = (
             /* Force 15px font, as the default seems do mess icon alignment */
-            <div style={{ fontSize: '15px', overflowX: 'clip' }}>
-                <Col>
-                    <Breadcrumb>
-                        {this.heading}
-                    </Breadcrumb>
-                </Col>
+            <div style={{ fontSize: '15px' }}>
+                <Row id="breadcumber-path">
+                    <Col s={12}>
+                        <Breadcrumb>
+                            {this.breadcumbs}
+                        </Breadcrumb>
+                    </Col>
+                </Row>
+                <Row id="dropdown-path">
+                    <Col s={12} className="center-align">
+                        <Dropdown trigger={
+                            <Button>{lastName}</Button>
+                        }>
+                            {this.dropdown}
+                        </Dropdown>
+                    </Col>
+                </Row>
             </div>
         )
     }
