@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Row, Col } from 'react-materialize';
 import * as server from './Server';
 import FolderView from './FolderView/FolderView';
 import { setTree } from './Tree';
@@ -25,11 +26,7 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div className="App">
-          <header className="App-header">
-            <h1>JS Viewer</h1>
-          </header>
-
+        <div className="App" style={{width: '100%'}}>
           {this.body(this.state.loaded)}
         </div>
       </Router>
@@ -39,13 +36,15 @@ class App extends Component {
   body(loaded) {
     if (loaded) {
       return (
-        <div>
-          <Switch>
-            <Route path="/" exact component={FolderView} />
-            <Route path="/folder" exact component={FolderView} />
-            <Route path="/folder/:folder(.*)" component={FolderView} />
-          </Switch>
-        </div>
+        <Row>
+          <Col s={12}>
+            <Switch>
+              <Route path="/" exact component={FolderView} />
+              <Route path="/folder" exact component={FolderView} />
+              <Route path="/folder/:folder(.*)" component={FolderView} />
+            </Switch>
+          </Col>
+        </Row>
       );
     } else {
       return <p>Loading...</p>;
